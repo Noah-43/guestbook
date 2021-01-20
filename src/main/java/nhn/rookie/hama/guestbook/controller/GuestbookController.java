@@ -92,6 +92,8 @@ public class GuestbookController {
         // addFlashAttribute : 전달한 값이 url 뒤에 붙지 않음. 일회성이라 리프레시 할 경우 데이터 소멸. 2개 이상 쓸 경우 데이터 소멸(그러려면 맵을 이용하여 한 번에 값 전달)
         // addAttribute : 전달한 값이 url 뒤에 붙음. 리프레시를 해도 데이터가 유지.
         redirectAttributes.addAttribute("page", requestDTO.getPage());
+        redirectAttributes.addAttribute("type", requestDTO.getType());
+        redirectAttributes.addAttribute("keyword", requestDTO.getKeyword());
         redirectAttributes.addAttribute("gno", dto.getGno());
 
         return "redirect:/guestbook/read";
