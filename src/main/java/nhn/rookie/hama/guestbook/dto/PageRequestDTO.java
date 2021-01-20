@@ -14,6 +14,8 @@ public class PageRequestDTO {
 
     private int page;
     private int size;
+    private String type;
+    private String keyword;
 
     // 따로 정의해서 @NoArgsConstructor를 쓰지 않음
     public PageRequestDTO() {
