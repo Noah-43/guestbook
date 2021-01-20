@@ -57,8 +57,9 @@ public class GuestbookController {
     // @ModelAttribute
     // 1. 파라미터로 넘겨 준 타입의 오브젝트를 자동으로 생성
     // 2. 생성된 오브젝트에 HTTP로 넘어 온 값들을 자동으로 바인딩 (여기서는 현재 page 값)
-    // 3. 어노테이션이 붙은 객체가 자동으로 Model 객체에 추가되어 전달됨
-    @GetMapping("/read")
+    // 3. 어노테이션이 붙은 객체가 자동으로 Model 객체에 추가되어 전달됨(괄호안의 이름으)
+    //@GetMapping("/read")
+    @GetMapping({"/read", "/modify"})
     public void read(long gno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model) {
 
         log.info("gno: " + gno);
@@ -68,4 +69,31 @@ public class GuestbookController {
         model.addAttribute("dto", dto);
     }
 
+    @PostMapping("/remove")
+    public String remove(long gno, RedirectAttributes redirectAttributes) {
+
+        log.info("gno: " + gno);
+
+        service.remove(gno);
+
+        redirectAttributes.addFlashAttribute("msg", gno);
+
+        return "redirect:/guestbook/list";
+    }
+
+    @PostMapping("/modify")
+    public String modify(GuestbookDTO dto, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, RedirectAttributes redirectAttributes) {
+
+        log.info("post modify........................................");
+        log.info("dto: " + dto);
+
+        service.modify(dto);
+
+        // addFlashAttribute : 전달한 값이 url 뒤에 붙지 않음. 일회성이라 리프레시 할 경우 데이터 소멸. 2개 이상 쓸 경우 데이터 소멸(그러려면 맵을 이용하여 한 번에 값 전달)
+        // addAttribute : 전달한 값이 url 뒤에 붙음. 리프레시를 해도 데이터가 유지.
+        redirectAttributes.addAttribute("page", requestDTO.getPage());
+        redirectAttributes.addAttribute("gno", dto.getGno());
+
+        return "redirect:/guestbook/read";
+    }
 }
