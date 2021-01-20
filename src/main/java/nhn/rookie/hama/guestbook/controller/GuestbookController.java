@@ -9,6 +9,7 @@ import nhn.rookie.hama.guestbook.service.GuestbookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -52,4 +53,19 @@ public class GuestbookController {
 
         return "redirect:/guestbook/list";
     }
+
+    // @ModelAttribute
+    // 1. 파라미터로 넘겨 준 타입의 오브젝트를 자동으로 생성
+    // 2. 생성된 오브젝트에 HTTP로 넘어 온 값들을 자동으로 바인딩 (여기서는 현재 page 값)
+    // 3. 어노테이션이 붙은 객체가 자동으로 Model 객체에 추가되어 전달됨
+    @GetMapping("/read")
+    public void read(long gno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model) {
+
+        log.info("gno: " + gno);
+
+        GuestbookDTO dto = service.read(gno);
+
+        model.addAttribute("dto", dto);
+    }
+
 }
