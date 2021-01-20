@@ -58,7 +58,8 @@ public class GuestbookController {
     // 1. 파라미터로 넘겨 준 타입의 오브젝트를 자동으로 생성
     // 2. 생성된 오브젝트에 HTTP로 넘어 온 값들을 자동으로 바인딩 (여기서는 현재 page 값)
     // 3. 어노테이션이 붙은 객체가 자동으로 Model 객체에 추가되어 전달됨
-    @GetMapping("/read")
+    //@GetMapping("/read")
+    @GetMapping({"/read", "/modify"})
     public void read(long gno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model) {
 
         log.info("gno: " + gno);
